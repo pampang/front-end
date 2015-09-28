@@ -1,0 +1,74 @@
+<!-- 创建一个对象，使它可以使用一个二维数组来存储每月的有用数据。增加一些方法用以显示月平均数，具体某一周平均数和所有周的平均数 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+function monthTemps(){
+	this.dataStore = [];
+	this.create = function(monthLength, startDay){   //创建一个存储的二维数组。
+		this.dataStore.monthLength = monthLength;    //存储这个月的日长度
+		for(var i = 0, k = 0; i < monthLength; i++){
+			var weekStore = [];                      //存储这个周的一位数组。
+			weekStore.weekLength = 0;            //保存一周的长度，即本月的这一周有多长
+			var length = monthLength - i < 7 ? monthLength - i : 7;
+			for(var j = startDay - 1; j < length; j++){
+				weekStore[j] = Math.floor(Math.random() * 100) + 0;   //为每一天初始化存放一个随机数。从0~100。
+				i++;
+				weekStore.weekLength++;
+			}
+			startDay = 1;
+			this.dataStore[k++] = weekStore;
+		}
+	};
+
+	this.weekSum = function(weekNum){
+		var thisWeek = this.dataStore[weekNum - 1];
+		var length = thisWeek.weekLength; //这一周中，日总长度
+		var dataLength = thisWeek.length;     //这一周中，数组数据的总长度
+		var sum = 0;
+		for(var i = dataLength - length; i < dataLength; i++){
+			sum += thisWeek[i];
+		}
+		return sum;
+	};
+
+	this.weekAverage = function(weekNum){
+		return this.weekSum(weekNum) / this.dataStore[weekNum - 1].weekLength;
+	};
+
+	this.monthAverage = function(){
+		var sum = 0;
+		var thisMonth = this.dataStore;     //本月的存储数组
+		var weekLength = thisMonth.length;  //本月的周长度
+		for(var i = 1; i <= weekLength; i++){
+			sum += this.weekSum(i);
+		}
+		return sum / thisMonth.monthLength;
+	};
+
+	this.allWeekAverage = function(){
+		//确定周长度。即this.dataStore.length
+		//定位每一周，输出
+		var thisMonth = this.dataStore;
+		var weekLength = thisMonth.length;
+		for(var i = 1; i <= weekLength; i++){
+			console.log("第" + i + "周的平均值为：" + this.weekAverage(i));
+		};
+	}
+}
+
+var jan = new monthTemps();
+
+jan.create(30, 4);
+
+console.log(jan.dataStore);
+</script>
+
+</body>
+</html>
+
+
