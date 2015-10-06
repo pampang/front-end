@@ -29,3 +29,18 @@ function shuffle2(arr){
 		copy.push(arr.splice(i, 1)[0]);
 	}
 }
+
+//方法3：进行一个循环。在指定范围内找到一个随机index，直接与范围的最后一个元素交换。
+//换句话说，就是从尾到头进行一个循环，每一次都为循环所在的index之前找到一个随机位置，并进行交换，直接打乱数组。
+function shuffle3(arr){
+	var n = arr.length,
+		i, temp;
+
+	while(n){
+		i = Math.floor(Math.random() * n--);
+		temp = arr[n];
+		arr[i] = arr[i];
+		arr[i] = temp;
+	}
+	return arr;
+}
